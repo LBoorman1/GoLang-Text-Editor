@@ -1,0 +1,4 @@
+this is a test of my new editor with opening
+a file in it
+this should print and then we can append and delete
+from the end.
