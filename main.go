@@ -8,7 +8,6 @@ import (
   "fyle.com/text/text"
 )
 
-type termios syscall.Termios
 
 func main() {
   fd := os.Stdin.Fd()
@@ -38,21 +37,29 @@ func main() {
 
   var b = make([]byte, 1)
   var fileBuf []byte
-  
+  var renderBuf []byte
+
   if len(os.Args) == 2 {
     fileName := os.Args[1]
     fileBuf = text.LoadFile(fileName)
+    for _, c := range fileBuf {
+      if c == '\n' {
+        renderBuf = append(renderBuf, '\r', '\n')
+      } else {
+        renderBuf = append(renderBuf, c)
+      }
+    }
   }
+
   text.ClearScreen()  
   // Main event loop, handles processing of key presses.
-  if len(fileBuf) > 0 {
-    fmt.Printf("%s", fileBuf)
+  if len(renderBuf) > 0 {
+    fmt.Print(string(renderBuf))
   }
   for {
     os.Stdin.Read(b)
-    fileBuf = text.HandleChar(fileBuf, b[0])
-    fmt.Print("\x1b[H\x1b[2J") 
-    fmt.Print("\x1b[2J")
-    fmt.Printf("%s", fileBuf)
+    renderBuf = text.HandleChar(renderBuf, b[0])
+    text.ClearScreen()
+    fmt.Print(string(renderBuf))
   }
 }

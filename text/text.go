@@ -13,8 +13,7 @@ var SpecialChars = map[int]func([]byte) []byte{
 
 // ClearScreen clears all characters from the terminal and returns the cursor HOME
 func ClearScreen() {
-  fmt.Print("\x1b[2J")
-  fmt.Print("\x1b[H\x1b[2J") 
+    fmt.Print("\x1b[2J\x1b[H")
 }
 
 func DeleteLastChar(b []byte) []byte {
