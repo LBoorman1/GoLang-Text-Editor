@@ -31,6 +31,7 @@ func main() {
   // <- blocks until sigs receives something.
   go func() {
     <-sigs
+    text.ClearScreen()
     text.SetTerminalState(fd, oldState)
     os.Exit(0)
   }() 
