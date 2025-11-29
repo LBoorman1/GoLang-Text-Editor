@@ -39,9 +39,10 @@ func main() {
   var b = make([]byte, 1)
   var fileBuf []byte
   var renderBuf []byte
-
+  
+  var fileName string
   if len(os.Args) == 2 {
-    fileName := os.Args[1]
+    fileName = os.Args[1]
     fileBuf = text.LoadFile(fileName)
     for _, c := range fileBuf {
       if c == '\n' {
@@ -59,7 +60,12 @@ func main() {
   }
   for {
     os.Stdin.Read(b)
-    renderBuf = text.HandleChar(renderBuf, b[0])
+    // Check if the user is inputting a fileOperation such as CTRL+S
+    if fn, ok := text.FileOperations[int(b[0])]; ok {
+      fn(fileName, renderBuf)  
+    } else {
+      renderBuf = text.HandleChar(renderBuf, b[0])
+    } 
     text.ClearScreen()
     fmt.Print(string(renderBuf))
   }

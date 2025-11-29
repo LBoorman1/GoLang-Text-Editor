@@ -1,4 +1,7 @@
-this is a test of my new editor with opening
-a file in it
-this should print and then we can append and delete
-from the end.
+this is a test of my new editor with opening
+a file in it
+this should print and then we can append and delete
+from the end.
+this is the new save feature
+this is using render buf now
+testing the new feature
