@@ -1,6 +1,7 @@
 package text
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -17,8 +18,21 @@ func LoadFile(fileName string) []byte {
 }
 
 func SaveFile(fileName string, renderBuf []byte) {
+  var newFileName []byte
+  var b = make([]byte, 1)
   if fileName == "" {
-    return
+    ClearScreen()
+    fmt.Print("Enter file name: ")
+    for {
+      os.Stdin.Read(b)
+      if int(b[0]) == 13 {
+        break
+      } 
+      newFileName = HandleChar(newFileName, b[0])
+      ClearScreen()
+      fmt.Printf("Enter file name: %s", newFileName)
+    }
+    fileName = string(newFileName)
   }
   renderBuf = append(renderBuf, '\r', '\n')
   err := os.WriteFile(fileName, renderBuf, 0700)
